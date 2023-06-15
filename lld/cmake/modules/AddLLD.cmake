@@ -22,7 +22,7 @@ macro(add_lld_library name)
       ARCHIVE DESTINATION lib${LLVM_LIBDIR_SUFFIX}
       RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
-    if (${ARG_SHARED} AND NOT CMAKE_CONFIGURATION_TYPES)
+    if (NOT CMAKE_CONFIGURATION_TYPES)
       add_llvm_install_targets(install-${name}
         DEPENDS ${name}
         COMPONENT ${name})

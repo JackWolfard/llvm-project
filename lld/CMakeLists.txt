@@ -185,6 +185,9 @@ if (MSVC)
   add_definitions(-wd4062) # Suppress 'warning C4062: enumerator X in switch of enum Y is not handled' from system header.
 endif()
 
+add_custom_target(lld-headers)
+set_target_properties(lld-headers PROPERTIES FOLDER "Misc")
+
 include_directories(BEFORE
   ${CMAKE_CURRENT_BINARY_DIR}/include
   ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -193,9 +196,16 @@ include_directories(BEFORE
 if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
   install(DIRECTORY include/
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    COMPONENT lld-headers
     FILES_MATCHING
     PATTERN "*.h"
     )
+
+  if (NOT LLVM_ENABLE_IDE)
+    add_llvm_install_targets(install-lld-headers
+                             DEPENDS lld-headers
+                             COMPONENT lld-headers)
+  endif()
 endif()
 
 add_subdirectory(Common)
